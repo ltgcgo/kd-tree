@@ -420,7 +420,7 @@ let KDTree = class KDTree {
 		upThis.#metricFunction = metric;
 		// If the provided list of points is not an array, assume a pre-built tree is being loaded.
 		if (Array.isArray(points)) {
-			upThis.#buildTree(points, 0, null);
+			upThis.root = upThis.#buildTree(points, 0, null);
 		} else {
 			upThis.#loadTree(points, metric, dimensions);
 		};
@@ -736,6 +736,6 @@ function kdTree(points, metric, dimensions) {
 }
 
 export {
-	kdTree as KDTree,
+	KDTree,
 	BinaryHeap as KDTreeBinaryHeap
 };
