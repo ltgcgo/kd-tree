@@ -84,7 +84,7 @@ let importPaletteFromString = (inputData) => {
 	};
 };
 self.gImportPaste = async () => {
-	let inputData = prompt("Paste your palette here in hexadecimal format.").replaceAll(",", " ").split(" ");
+	let inputData = prompt("Paste your palette here in hexadecimal format.").replaceAll(",", " ").replaceAll("\n", " ").split(" ");
 	while (palettePool.length) {
 		palettePool.pop();
 	};
@@ -102,7 +102,7 @@ setInterval(async () => {
 		colourDisplay[index].innerText = colourValue[index];
 		colourInput[index].value = colourValue[index];
 	};
-	colourDisplay[4].innerText = `${performance.now() - startTime}`.substring(0, 3);
+	colourDisplay[4].innerText = `${performance.now() - startTime}`.substring(0, 4);
 	let pickedResult = self.colourTree?.nearest(colourValue, 1, 65025)[0];
 	if (pickedResult[0]) {
 		colourDisplay[3].innerText = `${Math.sqrt(pickedResult[1])}`.substring(0, 3);
