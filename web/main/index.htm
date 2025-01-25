@@ -16,15 +16,32 @@
 	<div class="container" x-data="{}">
 		<div class="columns is-multiline is-mobile is-vcentered">
 			<div class="column column-option"><b>Import palette from</b></div>
-			<div class="column column-option column-button" @click="gImportPaste()" title="Opens up a popup to let you paste the palette table.">text input</div>
-			<div class="column column-option column-button" @click="gImportUrl()" title="Opens up a popup to let you paste the palette table.">URL</div>
+			<div class="column column-option column-button" @click="gImportPaste()" title="Opens up a popup to let you paste the palette table, in RRGGBB hexademical form.">text input</div>
+			<div class="column column-option column-button" @click="gImportUrl()" title="Opens up a popup to let you paste the URL to the palette table.">URL</div>
 			<div class="column"></div>
 		</div>
 		<div>
 			<!--Area for colour palette-->
 		</div>
-		<div>
-			<!--Area for the point searching demo-->
+		<div class="columns">
+			<div class="column"></div>
+			<div class="column columns column-view is-vcentered">
+				<div class="column-option" id="panel-colour-display">
+					<div>R: <span id="value-colour-0">204</span></div>
+					<div>G: <span id="value-colour-1">153</span></div>
+					<div>B: <span id="value-colour-2">102</span></div>
+				</div>
+				<div class="column">
+					<progress class="progress is-danger" id="input-colour-0" max="255" value="0" @mousemove="gInputPos(event, 0)"></progress>
+					<progress class="progress is-success" id="input-colour-1" max="255" value="0" @mousemove="gInputPos(event, 1)"></progress>
+					<progress class="progress is-link" id="input-colour-2" max="255" value="0" @mousemove="gInputPos(event, 2)"></progress>
+				</div>
+				<div class="column column-option">
+					<div class="demo-colour-square" id="display-selected" style="background-color: rgb(0, 0, 0)"></div><br/>
+					<div class="demo-colour-square" id="display-matched" style="background-color: rgb(0, 0, 0)"></div>
+				</div>
+			</div>
+			<div class="column"></div>
 		</div>
 	</div>
 </body>

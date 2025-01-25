@@ -43,3 +43,18 @@ body {
 .column-button[disabled='true'] {
 	opacity: 0.5;
 }
+.column-view {
+	max-width: 720px;
+	min-width: min(720px, max(100%, 243px));
+}
+
+.demo-colour-square {
+	display: inline-block;
+	width: 64px;
+	height: 64px;
+	border: 0 solid;
+	border-radius: 8px;
+}
+#panel-colour-display {
+	min-width: 4.5rem;
+}
