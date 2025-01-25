@@ -10,6 +10,11 @@
  * @license MIT License <http://www.opensource.org/licenses/mit-license.php>
  */
 
+/*
+	WARNING!
+	The current code haven't received any rewrite yet.
+*/
+
   function Node(obj, dimension, parent) {
     this.obj = obj;
     this.left = null;

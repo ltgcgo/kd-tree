@@ -8,9 +8,23 @@
 	<meta name="description" content="The updated KD-tree demo." />
 	<meta name="keywords" content="KD tree" />
 	<link rel="stylesheet" href="./css/bulma.css" />
+	<link rel="stylesheet" href="./css/fonts.css" />
 	<link rel="stylesheet" href="./css/main.css" />
-</head>
-<body>
-	<p>Polak is cute!</p>
 	<script src="./js/main.js" defer></script>
+</head>
+<body lang="en">
+	<div class="container" x-data="{}">
+		<div class="columns is-multiline is-mobile is-vcentered">
+			<div class="column column-option"><b>Import palette from</b></div>
+			<div class="column column-option column-button" @click="gImportPaste()" title="Opens up a popup to let you paste the palette table.">text input</div>
+			<div class="column column-option column-button" @click="gImportUrl()" title="Opens up a popup to let you paste the palette table.">URL</div>
+			<div class="column"></div>
+		</div>
+		<div>
+			<!--Area for colour palette-->
+		</div>
+		<div>
+			<!--Area for the point searching demo-->
+		</div>
+	</div>
 </body>

@@ -1,3 +1,45 @@
 body {
-	font-family: sans-serif;
+	font-family: "PT Sans Narrow", sans-serif;
+}
+
+:root {
+	--page-button-bg: #0000;
+	--page-button-bg-hover: #0001;
+	--page-option-border: #0000;
+	--page-option-border-active: #0008;
+}
+@media (prefers-color-scheme: dark) {
+	:root {
+		--page-button-bg: #fff0;
+		--page-button-bg-hover: #fff1;
+		--page-option-border: #fff0;
+		--page-option-border-active: #fffa;
+	}
+}
+
+.container {
+	padding: 24px;
+	font-size: 20px;
+	cursor: default;
+}
+.column-option {
+	max-width: max-content;
+	height: max-content;
+	border: 2px solid var(--page-option-border);
+	border-radius: 4px;
+	padding: 0.6rem;
+	margin: 0.15rem;
+}
+.column-option[active='true']{
+	border-color: var(--page-option-border-active);
+}
+.column-button {
+	background: var(--page-button-bg);
+	transition: background 0.2s;
+}
+.column-button:hover {
+	background: var(--page-button-bg-hover);
+}
+.column-button[disabled='true'] {
+	opacity: 0.5;
 }
