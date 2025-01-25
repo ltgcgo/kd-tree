@@ -7,6 +7,7 @@
  * @author Martin Kleppe <kleppe@ubilabs.net>, 2012
  * @author Ubilabs http://ubilabs.net, 2012
  * @author Lumière Élevé <ble-m@ltgc.cc>, 2025
+ * @author Lightingale Community https://ltgc.cc, 2025
  * @license MIT License <http://www.opensource.org/licenses/mit-license.php>
  */
 
