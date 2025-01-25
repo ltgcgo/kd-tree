@@ -1,7 +1,9 @@
 /**
- * k-d Tree JavaScript - V 1.01
+ * k-d Tree JavaScript - v1.1
  *
  * https://github.com/ubilabs/kd-tree-javascript
+ * https://github.com/ltgcgo/kd-tree
+ * https://codeberg.org/ltgc/kd-tree
  *
  * @author Mircea Pricop <pricop@ubilabs.net>, 2012
  * @author Martin Kleppe <kleppe@ubilabs.net>, 2012
@@ -68,9 +70,55 @@ let KDTree = class KDTree {
 		this.root = data;
 		this.#restoreParent(this.root);
 	};
+	#innerSearch(node, parent, point) {
+		if (node === null) {
+			return parent;
+		};
+		let dimension = dimensions[node.dimension];
+		if (point[dimension] < node.obj[dimension]) {
+			return upThis.#innerSearch(node.left, node, point);
+		} else {
+			return upThis.#innerSearch(node.right, node, point);
+		};
+	};
+	toJSON(src) {
+		let upThis = this;
+		if (!src) {
+			src = upThis.root;
+		};
+		let dest = new Node(src.obj, src.dimension, null);
+		if (src.left) {
+			dest.left = upThis.toJSON(src.left);
+		};
+		if (src.right) {
+			dest.right = upThis.toJSON(src.right);
+		};
+		return dest;
+	};
+	insert(point) {
+		let upThis = this;
+		let insertPosition = upThis.#innerSearch(upThis.root, null, point);
+		if (insertPosition === null) {
+			upThis.root = new Node(point, 0, null);
+			return;
+		};
+		let newNode = new Node(point, (insertPosition.dimension + 1) % upThis.#dimensions.length, insertPosition);
+		let dimension = upThis.#dimensions[insertPosition.dimension];
+		if (point[dimension] < insertPosition.obj[dimension]) {
+			insertPosition.left = newNode;
+		} else {
+			insertPosition.right = newNode;
+		};
+	};
 	constructor(points, metric, dimensions) {
 		let upThis = this;
 		upThis.#dimensions = dimensions;
+		// If the provided list of points is not an array, assume a pre-built tree is being loaded.
+		if (Array.isArray(points)) {
+			upThis.#buildTree(points, 0, null);
+		} else {
+			upThis.#loadTree(points, metric, dimensions);
+		};
 	};
 };
 
