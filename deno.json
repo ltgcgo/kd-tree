@@ -1,0 +1,29 @@
+{
+	"name": "@ltgc/kd-tree",
+	"version": "1.0.2"
+	"exports": {
+		"./kd-tree": "./dist/kd-tree.mjs"
+	},
+	"publish": {
+		"include": [
+			"dist/**",
+			"README.md"
+		]
+	},
+	"fmt": {
+		"useTabs": true,
+		"lineWidth": 200,
+		"indentWidth": 4,
+		"semiColons": true,
+		"exclude": [
+			"*"
+		]
+	},
+	"lint": {
+		"exclude": [
+			"*"
+		]
+	},
+	"nodeModulesDir": "none",
+	"npmRegistry": "http://127.0.0.1:80/"
+}
