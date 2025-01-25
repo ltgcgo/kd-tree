@@ -49,6 +49,11 @@ const dim3Dist = (a, b) => {
 
 let palettePool = [];
 const paletteBrowser = $e("#palette-browser");
+const chooseColourFromPalette = function (ev) {
+	this.colour.forEach((e, i) => {
+		colourValue[i] = e;
+	});
+};
 let importPaletteFromString = (inputData) => {
 	for (let e of inputData) {
 		let modified = 0, colourValue = new Uint8Array(3);
@@ -75,13 +80,15 @@ let importPaletteFromString = (inputData) => {
 	if (self.colourTree) {
 		delete self.colourTree;
 	};
-	self.colourTree = new KDTree(palettePool, dim3Dist, dim3Prop);
 	for (let colour of palettePool) {
 		let colourElement = document.createElement("div");
 		colourElement.className = "cell demo-colour-square-small";
 		colourElement.style.background = `rgb(${colour.join(", ")})`;
+		colourElement.colour = colour;
+		colourElement.addEventListener("mouseup", chooseColourFromPalette);
 		paletteBrowser.appendChild(colourElement);
 	};
+	self.colourTree = new KDTree(palettePool, dim3Dist, dim3Prop);
 };
 self.gImportPaste = async () => {
 	let inputData = prompt("Paste your palette here in hexadecimal format.").replaceAll(",", " ").replaceAll("\n", " ").split(" ");
