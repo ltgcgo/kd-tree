@@ -15,6 +15,7 @@ import {
 // Input handlers
 const colourValue = new Uint8Array(3);
 const colourBoxSelected = $e("#display-selected");
+const colourBoxNearest = $e("#display-matched");
 const colourInput = [
 	$e("#input-colour-0"),
 	$e("#input-colour-1"),
@@ -33,6 +34,17 @@ self.gInputPos = async function (ev, index) {
 	let computedValue = Math.floor((ev.srcElement.max + 1) * (realX / realWidth));
 	colourValue[index] = computedValue;
 	//console.debug(ev, index);
+};
+
+const dim3Prop = [0, 1, 2];
+const dim3Dist = (a, b) => {
+	let sum = 0;
+	for (let e of dim3Prop) {
+		let diff = a[e] - b[e];
+		sum += diff * diff;
+	};
+	return sum;
+	//return Math.sqrt(sum);
 };
 
 let palettePool = [];
@@ -60,6 +72,10 @@ let importPaletteFromString = (inputData) => {
 			palettePool.push(colourValue);
 		};
 	};
+	if (self.colourTree) {
+		delete self.colourTree;
+	};
+	self.colourTree = new KDTree(palettePool, dim3Dist, dim3Prop);
 	for (let colour of palettePool) {
 		let colourElement = document.createElement("div");
 		colourElement.className = "cell demo-colour-square-small";
@@ -87,6 +103,11 @@ setInterval(async () => {
 		colourInput[index].value = colourValue[index];
 	};
 	colourDisplay[4].innerText = `${performance.now() - startTime}`.substring(0, 3);
+	let pickedResult = self.colourTree?.nearest(colourValue, 1, 65025)[0];
+	if (pickedResult[0]) {
+		colourDisplay[3].innerText = `${Math.sqrt(pickedResult[1])}`.substring(0, 3);
+		colourBoxNearest.style.backgroundColor = `rgb(${pickedResult[0].join(", ")})`;
+	};
 }, 40);
 
 importPaletteFromString(`000 a00 0a0 a70 00a a0a 0aa aaa 555 f55 5f5 ff5 55f f5f 5ff fff`.split(" "));
