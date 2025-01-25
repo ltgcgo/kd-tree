@@ -23,7 +23,8 @@ const colourInput = [
 const colourDisplay = [
 	$e("#value-colour-0"),
 	$e("#value-colour-1"),
-	$e("#value-colour-2")
+	$e("#value-colour-2"),
+	$e("#value-colour-3")
 ];
 self.gInputPos = async function (ev, index) {
 	let realX = ev.layerX - ev.srcElement.offsetLeft;
@@ -32,12 +33,59 @@ self.gInputPos = async function (ev, index) {
 	colourValue[index] = computedValue;
 	//console.debug(ev, index);
 };
+
+let palettePool = [];
+const paletteBrowser = $e("#palette-browser");
+let importPaletteFromString = (inputData) => {
+	for (let e of inputData) {
+		let modified = 0, colourValue = new Uint8Array(3);
+		switch ((e.length * 86) >> 8) {
+			case 1: {
+				for (let i = 0; i < 3; i ++) {
+					colourValue[i] = parseInt(`0x${e[i]}`) * 17;
+					modified += 2;
+				};
+				break;
+			};
+			case 2: {
+				for (let i = 0; i < 6; i ++) {
+					colourValue[i >> 1] |= parseInt(`0x${e[i]}`) << ((1 ^ (i & 1)) << 2);
+					modified ++;
+				};
+				break;
+			};
+		};
+		if (modified == 6) {
+			palettePool.push(colourValue);
+		};
+	};
+	for (let colour of palettePool) {
+		let colourElement = document.createElement("div");
+		colourElement.className = "cell demo-colour-square-small";
+		colourElement.style.background = `rgb(${colour.join(", ")})`;
+		paletteBrowser.appendChild(colourElement);
+	};
+};
+self.gImportPaste = async () => {
+	let inputData = prompt("Paste your palette here in hexadecimal format.").replaceAll(",", " ").split(" ");
+	while (palettePool.length) {
+		palettePool.pop();
+	};
+	while (paletteBrowser.children.length) {
+		paletteBrowser.children[0].remove();
+	};
+	importPaletteFromString(inputData);
+	console.debug(palettePool);
+};
+
 setInterval(async () => {
 	colourBoxSelected.style.backgroundColor = `rgb(${colourValue.join(", ")})`;
 	for (let index = 0; index < 3; index ++) {
 		colourDisplay[index].innerText = colourValue[index];
 		colourInput[index].value = colourValue[index];
 	};
-}, 40);
+}, 50);
+
+importPaletteFromString(`000 00a 0a0 07a a00 a0a aa0 aaa 555 55f 5f5 5ff f55 f5f ff5 fff`.split(" "));
 
 Alpine.start();

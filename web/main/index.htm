@@ -20,9 +20,6 @@
 			<div class="column column-option column-button" @click="gImportUrl()" title="Opens up a popup to let you paste the URL to the palette table.">URL</div>
 			<div class="column"></div>
 		</div>
-		<div>
-			<!--Area for colour palette-->
-		</div>
 		<div class="columns">
 			<div class="column"></div>
 			<div class="column columns column-view is-vcentered">
@@ -30,6 +27,7 @@
 					<div>R: <span id="value-colour-0">204</span></div>
 					<div>G: <span id="value-colour-1">153</span></div>
 					<div>B: <span id="value-colour-2">102</span></div>
+					<div>d: <span id="value-colour-3">0</span></div>
 				</div>
 				<div class="column">
 					<progress class="progress is-danger" id="input-colour-0" max="255" value="0" @mousemove="gInputPos(event, 0)"></progress>
@@ -43,5 +41,6 @@
 			</div>
 			<div class="column"></div>
 		</div>
+		<div id="palette-browser"></div>
 	</div>
 </body>
