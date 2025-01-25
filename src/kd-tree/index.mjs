@@ -81,6 +81,76 @@ let KDTree = class KDTree {
 			return upThis.#innerSearch(node.right, node, point);
 		};
 	};
+	#nodeSearch(node, point) {
+		let upThis = this;
+		if (node === null) {
+			return null;
+		};
+		if (node.obj === point) {
+			return node;
+		};
+		let dimension = upThis.#dimensions[node.dimension];
+		if (point[dimension] < node.obj[dimension]) {
+			return upThis.#nodeSearch(node.left, point);
+		} else {
+			return upThis.#nodeSearch(node.right, point);
+		};
+	};
+	#findMin(node, dim) {
+		let upThis = this;
+		if (node === null) {
+			return null;
+		};
+		let dimension = upThis.#dimensions[dim];
+		if (node.dimension === dim) {
+			if (node.left !== null) {
+				return upThis.#findMin(node.left, dim);
+			};
+			return node;
+		};
+		let own = node.obj[dimension];
+		let left = upThis.#findMin(node.left, dim);
+		let right = upThis.#findMin(node.right, dim);
+		let min = node;
+		if (left !== null && left.obj[dimension] < own) {
+			min = left;
+		};
+		if (right !== null && right.obj[dimension] < min.obj[dimension]) {
+			min = right;
+		};
+		return min;
+	};
+	#removeNode(node) {
+		let upThis = this;
+		if (node.left === null && node.right === null) {
+			if (node.parent === null) {
+				upThis.root = null;
+				return;
+			};
+			let parentDimension = upThis.#dimensions[node.parent.dimension];
+			if (node.obj[parentDimension] < node.parent.obj[parentDimension]) {
+				node.parent.left = null;
+			} else {
+				node.parent.right = null;
+			};
+			return;
+		};
+		// If the right subtree isn't empty, swap with the minimum element on the node's dimension.
+		// If it is empty, the left and right subtrees are swapped and same is done to both.
+		if (node.right == null) {
+			let nextNode = upThis.#findMin(node.left, node.dimension);
+			let nextObj = nextNode.obj;
+			upThis.#removeNode(nextNode);
+			node.right = node.left;
+			node.left = null;
+			node.obj = nextObj;
+		} else {
+			let nextNode = upThis.#findMin(node.right, node.dimension);
+			let nextObj = nextNode.obj;
+			upThis.#removeNode(nextNode);
+			node.obj = nextObj;
+		};
+	};
 	toJSON(src) {
 		let upThis = this;
 		if (!src) {
@@ -109,6 +179,14 @@ let KDTree = class KDTree {
 		} else {
 			insertPosition.right = newNode;
 		};
+	};
+	remove(point) {
+		let upThis = this;
+		let node = upThis.#nodeSearch(upThis.root, point);
+		if (node === null) {
+			return;
+		};
+		upThis.#removeNode(node);
 	};
 	constructor(points, metric, dimensions) {
 		let upThis = this;
