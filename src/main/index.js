@@ -24,7 +24,8 @@ const colourDisplay = [
 	$e("#value-colour-0"),
 	$e("#value-colour-1"),
 	$e("#value-colour-2"),
-	$e("#value-colour-3")
+	$e("#value-colour-3"),
+	$e("#value-colour-4")
 ];
 self.gInputPos = async function (ev, index) {
 	let realX = ev.layerX - ev.srcElement.offsetLeft;
@@ -79,13 +80,15 @@ self.gImportPaste = async () => {
 };
 
 setInterval(async () => {
+	let startTime = performance.now();
 	colourBoxSelected.style.backgroundColor = `rgb(${colourValue.join(", ")})`;
 	for (let index = 0; index < 3; index ++) {
 		colourDisplay[index].innerText = colourValue[index];
 		colourInput[index].value = colourValue[index];
 	};
-}, 50);
+	colourDisplay[4].innerText = `${performance.now() - startTime}`.substring(0, 3);
+}, 40);
 
-importPaletteFromString(`000 00a 0a0 07a a00 a0a aa0 aaa 555 55f 5f5 5ff f55 f5f ff5 fff`.split(" "));
+importPaletteFromString(`000 a00 0a0 a70 00a a0a 0aa aaa 555 f55 5f5 ff5 55f f5f 5ff fff`.split(" "));
 
 Alpine.start();
