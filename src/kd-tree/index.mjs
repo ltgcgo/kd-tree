@@ -18,7 +18,7 @@
 	The current code haven't received any rewrite yet.
 */
 
-let Node = class Node {
+let TreeNode = class TreeNode {
 	left = null;
 	right = null;
 	obj;
@@ -175,13 +175,13 @@ let KDTree = class KDTree {
 			return null;
 		};
 		if (points.length === 1) {
-			return new Node(points[0], dim, parent);
+			return new TreeNode(points[0], dim, parent);
 		};
 		points.sort((a, b) => {
 			return a[upThis.#dimensions[dim]] - b[upThis.#dimensions[dim]];
 		});
 		let median = points.length >> 1;
-		let node = new Node(points[median], dim, parent);
+		let node = new TreeNode(points[median], dim, parent);
 		node.left = upThis.#buildTree(points.slice(0, median), depth + 1, node);
 		node.right = upThis.#buildTree(points.slice(median + 1), depth + 1, node);
 		return node;
@@ -358,7 +358,7 @@ let KDTree = class KDTree {
 		if (!src) {
 			src = upThis.root;
 		};
-		let dest = new Node(src.obj, src.dimension, null);
+		let dest = new TreeNode(src.obj, src.dimension, null);
 		if (src.left) {
 			dest.left = upThis.toJSON(src.left);
 		};
@@ -371,10 +371,10 @@ let KDTree = class KDTree {
 		let upThis = this;
 		let insertPosition = upThis.#innerSearch(upThis.root, null, point);
 		if (insertPosition === null) {
-			upThis.root = new Node(point, 0, null);
+			upThis.root = new TreeNode(point, 0, null);
 			return;
 		};
-		let newNode = new Node(point, (insertPosition.dimension + 1) % upThis.#dimensions.length, insertPosition);
+		let newNode = new TreeNode(point, (insertPosition.dimension + 1) % upThis.#dimensions.length, insertPosition);
 		let dimension = upThis.#dimensions[insertPosition.dimension];
 		if (point[dimension] < insertPosition.obj[dimension]) {
 			insertPosition.left = newNode;
