@@ -13,27 +13,7 @@
  * @license MIT License <http://www.opensource.org/licenses/mit-license.php>
  */
 
-/*
-	WARNING!
-	The current code haven't received any rewrite yet.
-*/
-
-let TreeNode = class TreeNode {
-	left = null;
-	right = null;
-	obj;
-	parent;
-	dimension;
-	constructor(object, dimension, parent) {
-		let upThis = this;
-		upThis.obj = object;
-		upThis.parent = parent;
-		upThis.dimension = dimension;
-	};
-};
-
-// Binary heap implementation from:
-// http://eloquentjavascript.net/appendix2.html
+// Binary heap implementation from http://eloquentjavascript.net/appendix2.html
 
 function BinaryHeap(scoreFunction){
 	this.content = [];
@@ -156,6 +136,118 @@ BinaryHeap.prototype = {
 			}
 		}
 	}
+};
+
+// Binary heap implementation from http://eloquentjavascript.net/appendix2.html
+// Rewritten to use the modern syntax
+
+let KDBinaryHeap = class KDBinaryHeap {
+	content = [];
+	scoreFunction;
+	push(element) {
+		let upThis = this;
+		upThis.content.push(element);
+		upThis.bubbleUp(upThis.content.length - 1);
+	};
+	pop() {
+		let upThis = this;
+		let result = upThis.content[0];
+		let end = upThis.content.pop();
+		if (upThis.content.length > 0) {
+			upThis.content[0] = end;
+			upThis.sinkDown(0);
+		};
+		return result;
+	};
+	peek() {
+		return this.content[0];
+	};
+	remove(node) {
+		let upThis = this;
+		let length = upThis.content.length;
+		for (let i = 0; i < length; i ++) {
+			if (upThis.content[i] == node) {
+				let end = upThis.content.pop();
+				if (i != length - 1) {
+					upThis.content[i] = end;
+					if (upThis.scoreFunction(end) < upThis.scoreFunction(node)) {
+						upThis.bubbleUp(i);
+					} else {
+						upThis.sinkDown(i);
+					};
+				};
+				return;
+			};
+		};
+		throw(new Error(`The specified node was not found.`));
+	};
+	size() {
+		return this.content.length;
+	};
+	bubbleUp(n) {
+		let upThis = this;
+		let element = upThis.content[n];
+		while (n > 0) {
+			let parentN = ((n + 1) >> 1) - 1,
+				parent = upThis.content[parentN];
+			if (upThis.scoreFunction(element) < upThis.scoreFunction(parent)) {
+				upThis.content[parentN] = element;
+				upThis.content[n] = parent;
+				n = parentN;
+			} else {
+				break;
+			};
+		};
+	};
+	sinkDown(n) {
+		let upThis = this;
+		let length = upThis.content.length,
+			element = upThis.content[n],
+			score = upThis.scoreFunction(element);
+		while (true) {
+			let child2N = (n + 1) << 1,
+				child1N = child2N - 1;
+			let swap = null;
+			if (child1N < length) {
+				let child1 = upThis.content[child1N],
+					child1Score = upThis.scoreFunction(child1);
+				if (child1Score < score) {
+					swap = child1N;
+				};
+			};
+			if (child2N < length) {
+				let child2 = upThis.content[child2N],
+					child2Score = upThis.scoreFunction(child2);
+				if (child2Score < score) {
+					swap = child2N;
+				};
+			};
+			if (swap != null) {
+				upThis.content[n] = upThis.content[swap];
+				upThis.content[swap] = element;
+				n = swap;
+			} else {
+				break;
+			};
+		};
+	};
+	constructor(scoreFunction) {
+		this.scoreFunction = scoreFunction;
+	};
+};
+
+let TreeNode = class TreeNode {
+	left = null;
+	right = null;
+	obj;
+	parent;
+	dimension;
+	constructor(object, dimension, parent) {
+		let upThis = this;
+		upThis.obj = object;
+		upThis.parent = parent;
+		upThis.dimension = dimension;
+	};
 };
 
 let KDTree = class KDTree {
@@ -429,5 +521,5 @@ let KDTree = class KDTree {
 
 export {
 	KDTree,
-	BinaryHeap as KDTreeBinaryHeap
+	BinaryHeap as KDBinaryHeap
 };

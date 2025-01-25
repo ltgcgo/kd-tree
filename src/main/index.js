@@ -112,7 +112,7 @@ setInterval(async () => {
 	let pickedResult = self.colourTree?.nearest(colourValue, 1, 65025)[0];
 	colourDisplay[4].innerText = `${performance.now() - startTime}`.substring(0, 4);
 	if (pickedResult[0]) {
-		colourDisplay[3].innerText = `${Math.sqrt(pickedResult[1])}`.substring(0, 3);
+		colourDisplay[3].innerText = `${Math.sqrt(pickedResult[1])}`.substring(0, 4);
 		colourBoxNearest.style.backgroundColor = `rgb(${pickedResult[0].join(", ")})`;
 	};
 }, 40);
