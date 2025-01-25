@@ -103,14 +103,14 @@ self.gImportPaste = async () => {
 };
 
 setInterval(async () => {
-	let startTime = performance.now();
 	colourBoxSelected.style.backgroundColor = `rgb(${colourValue.join(", ")})`;
 	for (let index = 0; index < 3; index ++) {
 		colourDisplay[index].innerText = colourValue[index];
 		colourInput[index].value = colourValue[index];
 	};
-	colourDisplay[4].innerText = `${performance.now() - startTime}`.substring(0, 4);
+	let startTime = performance.now();
 	let pickedResult = self.colourTree?.nearest(colourValue, 1, 65025)[0];
+	colourDisplay[4].innerText = `${performance.now() - startTime}`.substring(0, 4);
 	if (pickedResult[0]) {
 		colourDisplay[3].innerText = `${Math.sqrt(pickedResult[1])}`.substring(0, 3);
 		colourBoxNearest.style.backgroundColor = `rgb(${pickedResult[0].join(", ")})`;

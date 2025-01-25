@@ -16,13 +16,63 @@
 	The current code haven't received any rewrite yet.
 */
 
-function Node(obj, dimension, parent) {
-	this.obj = obj;
-	this.left = null;
-	this.right = null;
-	this.parent = parent;
-	this.dimension = dimension;
-}
+let Node = class Node {
+	left = null;
+	right = null;
+	obj;
+	parent;
+	dimension;
+	constructor(object, dimension, parent) {
+		let upThis = this;
+		upThis.obj = object;
+		upThis.parent = parent;
+		upThis.dimension = dimension;
+	};
+};
+
+let KDTree = class KDTree {
+	#dimensions;
+	get dimensions() {
+		return this.#dimensions;
+	};
+	#buildTree(points, depth, parent) {
+		let upThis = this;
+		let dim = depth % upThis.#dimensions.length;
+		if (points.length === 0) {
+			return null;
+		};
+		if (points.length === 1) {
+			return new Node(points[0], dim, parent);
+		};
+		points.sort((a, b) => {
+			return a[upThis.#dimensions[dim]] - b[upThis.#dimensions[dim]];
+		});
+		let median = points.length >> 1;
+		let node = new Node(points[median], dim, parent);
+		node.left = upThis.#buildTree(points.slice(0, median), depth + 1, node);
+		node.right = upThis.#buildTree(points.slice(median + 1), depth + 1, node);
+		return node;
+	};
+	#restoreParent(root) {
+		let upThis = this;
+		if (root.left) {
+			root.left.parent = root;
+			upThis.#restoreParent(root.left);
+		};
+		if (root.right) {
+			root.right.parent = root;
+			upThis.#restoreParent(root.right);
+		};
+	};
+	#loadTree(data) {
+		this.root = data;
+		this.#restoreParent(this.root);
+	};
+	constructor(points, metric, dimensions) {
+		let upThis = this;
+		upThis.#dimensions = dimensions;
+	};
+};
 
 function kdTree(points, metric, dimensions) {
 
