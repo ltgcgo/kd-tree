@@ -102,6 +102,7 @@ self.gImportPaste = async () => {
 	console.debug(palettePool);
 };
 
+let weightedTime = 0;
 setInterval(async () => {
 	colourBoxSelected.style.backgroundColor = `rgb(${colourValue.join(", ")})`;
 	for (let index = 0; index < 3; index ++) {
@@ -110,7 +111,9 @@ setInterval(async () => {
 	};
 	let startTime = performance.now();
 	let pickedResult = self.colourTree?.nearest(colourValue, 1, 65025)[0];
-	colourDisplay[4].innerText = `${performance.now() - startTime}`.substring(0, 4);
+	weightedTime = weightedTime * 0.975 + (performance.now() - startTime) * 0.025;
+	colourDisplay[4].innerText = `${weightedTime}`.substring(0, 4);
+	colourDisplay[4].title = `${weightedTime}`.substring(0, 8);
 	if (pickedResult[0]) {
 		colourDisplay[3].innerText = `${Math.sqrt(pickedResult[1])}`.substring(0, 4);
 		colourBoxNearest.style.backgroundColor = `rgb(${pickedResult[0].join(", ")})`;
