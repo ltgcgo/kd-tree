@@ -1,6 +1,6 @@
 {
 	"name": "@ltgc/kd-tree",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"exports": {
 		"./kd-tree": "./dist/kd-tree.d.mts"
 	},

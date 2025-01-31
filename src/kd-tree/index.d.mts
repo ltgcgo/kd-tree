@@ -41,7 +41,7 @@
  @module
  */
 
-/*
+/**
  * Node object of a k-dimensional tree.
  */
 export class TreeNode {
