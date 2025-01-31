@@ -1,6 +1,6 @@
 {
 	"name": "@ltgc/kd-tree",
-	"version": "0.0.1"
+	"version": "1.0.3"
 	"exports": {
 		"./kd-tree": "./dist/kd-tree.mjs"
 	},
@@ -24,6 +24,6 @@
 			"*"
 		]
 	},
-	"nodeModulesDir": false,
+	"nodeModulesDir": "none",
 	"npmRegistry": "http://127.0.0.1:80/"
 }
