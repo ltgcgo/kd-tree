@@ -63,7 +63,7 @@ export class TreeNode {
 	constructor(object: any, dimension: Number, parent?: TreeNode);
 }
 
-/*
+/**
  * The k-dimensional tree.
  */
 export class KDTree {
@@ -91,7 +91,7 @@ export class KDTree {
 	constructor(points: ArrayLike<ArrayLike<Number>>, metric: Function, dimensions: ArrayLike<Number>);
 }
 
-/*
+/**
  * Binary heap implementation from http://eloquentjavascript.net/appendix2.html . Rewritten into modern syntax.
  * I don't know how this specific implemention work yet, so no docs.
  */
