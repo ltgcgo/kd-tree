@@ -2,7 +2,7 @@
 	"name": "@ltgc/kd-tree",
 	"version": "0.0.2",
 	"exports": {
-		"./kd-tree": "./dist/kd-tree.mjs"
+		"./kd-tree": "./dist/kd-tree.d.mts"
 	},
 	"publish": {
 		"include": [

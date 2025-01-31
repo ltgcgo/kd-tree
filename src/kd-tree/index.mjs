@@ -398,5 +398,6 @@ let KDTree = class KDTree {
 
 export {
 	KDTree,
+	TreeNode,
 	KDBinaryHeap
 };
