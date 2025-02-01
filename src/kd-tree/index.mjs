@@ -114,8 +114,8 @@ let KDBinaryHeap = class KDBinaryHeap {
 };
 
 let TreeNode = class TreeNode {
-	left;
-	right;
+	left = null;
+	right = null;
 	obj;
 	parent;
 	dimension;
@@ -171,7 +171,7 @@ let KDTree = class KDTree {
 		this.#restoreParent(this.root);
 	};
 	#innerSearch(node, parent, point) {
-		if (node === undefined) {
+		if (node === null) {
 			return parent;
 		};
 		let dimension = dimensions[node.dimension];
@@ -183,7 +183,7 @@ let KDTree = class KDTree {
 	};
 	#nodeSearch(node, point) {
 		let upThis = this;
-		if (node === undefined) {
+		if (node === null) {
 			return;
 		};
 		if (node.obj === point) {
@@ -198,7 +198,7 @@ let KDTree = class KDTree {
 	};
 	#findMin(node, dim) {
 		let upThis = this;
-		if (node === undefined) {
+		if (node === null) {
 			return;
 		};
 		let dimension = upThis.#dimensions[dim];
@@ -222,27 +222,27 @@ let KDTree = class KDTree {
 	};
 	#removeNode(node) {
 		let upThis = this;
-		if (node.left === undefined && node.right === undefined) {
-			if (node.parent === undefined) {
-				upThis.root = undefined;
+		if (node.left === null && node.right === null) {
+			if (node.parent === null) {
+				upThis.root = null;
 				return;
 			};
 			let parentDimension = upThis.#dimensions[node.parent.dimension];
 			if (node.obj[parentDimension] < node.parent.obj[parentDimension]) {
-				node.parent.left = undefined;
+				node.parent.left = null;
 			} else {
-				node.parent.right = undefined;
+				node.parent.right = null;
 			};
 			return;
 		};
 		// If the right subtree isn't empty, swap with the minimum element on the node's dimension.
 		// If it is empty, the left and right subtrees are swapped and same is done to both.
-		if (node.right === undefined) {
+		if (node.right === null) {
 			let nextNode = upThis.#findMin(node.left, node.dimension);
 			let nextObj = nextNode.obj;
 			upThis.#removeNode(nextNode);
 			node.right = node.left;
-			node.left = undefined;
+			node.left = null;
 			node.obj = nextObj;
 		} else {
 			let nextNode = upThis.#findMin(node.right, node.dimension);
@@ -270,16 +270,16 @@ let KDTree = class KDTree {
 			};
 		};
 		let linearDistance = upThis.#metricFunction(linearPoint, node.obj);
-		if (node.right === undefined && node.left === undefined) {
+		if (node.right === null && node.left === null) {
 			if (bestNodes.size() < maxNodes || ownDistance < bestNodes.peek()[1]) {
 				upThis.#saveNode(node, ownDistance, bestNodes, maxNodes);
 			};
 			return;
 		};
 		let bestChild;
-		if (node.right === undefined) {
+		if (node.right === null) {
 			bestChild = node.left;
-		} else if (node.left === undefined) {
+		} else if (node.left === null) {
 			bestChild = node.right;
 		} else {
 			if (point[dimension] < node.obj[dimension]) {
@@ -311,13 +311,13 @@ let KDTree = class KDTree {
 		};
 	};
 	#height(node) {
-		if (node === undefined) {
+		if (node === null) {
 			return 0;
 		};
 		return Math.max(this.#height(node.left), this.#height(node.right)) + 1;
 	};
 	#count(node) {
-		if (node === undefined) {
+		if (node === null) {
 			return 0;
 		};
 		return this.#count(node.left) + this.#count(node.right) + 1;
@@ -339,7 +339,7 @@ let KDTree = class KDTree {
 	insert(point) {
 		let upThis = this;
 		let insertPosition = upThis.#innerSearch(upThis.root, undefined, point);
-		if (insertPosition === undefined) {
+		if (insertPosition === null) {
 			upThis.root = new TreeNode(point, 0, undefined);
 			return;
 		};
@@ -354,7 +354,7 @@ let KDTree = class KDTree {
 	remove(point) {
 		let upThis = this;
 		let node = upThis.#nodeSearch(upThis.root, point);
-		if (node === undefined) {
+		if (node === null) {
 			return;
 		};
 		upThis.#removeNode(node);
